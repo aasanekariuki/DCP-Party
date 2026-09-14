@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   DCP Kenya — design tokens
+   A civic-editorial system updated with a dark forest canvas,
+   vibrant light-green ambient mesh layers, mint & tea accents,
+   and sage borders while maintaining the original typography,
+   editorial layout, and structural system.
+----------------------------------------------------------------*/
+
+:root {
+  /* Text & Ink (Mint-Cream white & dim greens) */
+  --color-ink: #f0f7f4;
+  --color-ink-soft: #c3d0c9;
+
+  /* Surfaces & Lines (Dark Forest & Sage) */
+  --color-paper: #0f1412;
+  --color-paper-raised: #161c1a;
+  --color-paper-line: #222c28;
+
+  /* Primary Light Green & Mint Accents (formerly maize) */
+  --color-maize: #52b788;
+  --color-maize-deep: #2d6a4f;
+
+  /* Forest & Savanna Greens */
+  --color-savanna: #52b788;
+  --color-savanna-deep: #1e4735;
+
+  /* Alerts / Accents */
+  --color-brick: #d4a359;
+  --color-brick-soft: #232b26;
+
+  /* Light green palette extensions */
+  --color-mint-bright: #95d5b2;
+  --color-mint-soft: #b7e4c7;
+  --color-tea-green: #dcedc1;
+
+  /* Newsreader / IBM Plex Sans are the intended typefaces (see the
+     note in app/layout.tsx on why they aren't loaded via
+     next/font/google in this environment). These stacks approximate
+     their character with widely available system faces. */
+  --font-display: Iowan Old Style, "Palatino Linotype", Palatino, Georgia, serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, Helvetica, Arial, sans-serif;
+
+  --radius-sm: 3px;
+  --radius-md: 6px;
+
+  --shadow-card: 0 1px 0 var(--color-paper-line);
+
+  --space-section: clamp(3.5rem, 6vw, 7rem);
+}
+
+@theme inline {
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-paper: var(--color-paper);
+  --color-paper-raised: var(--color-paper-raised);
+  --color-paper-line: var(--color-paper-line);
+  --color-maize: var(--color-maize);
+  --color-maize-deep: var(--color-maize-deep);
+  --color-savanna: var(--color-savanna);
+  --color-savanna-deep: var(--color-savanna-deep);
+  --color-brick: var(--color-brick);
+  --color-brick-soft: var(--color-brick-soft);
+  --color-mint-bright: var(--color-mint-bright);
+  --color-mint-soft: var(--color-mint-soft);
+  --color-tea-green: var(--color-tea-green);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+
+  /* Ambient light green multi-point radial mesh overlay */
+  background-image:
+    radial-gradient(circle at 15% 15%, rgba(149, 213, 178, 0.22) 0%, transparent 40%),
+    radial-gradient(circle at 85% 10%, rgba(220, 237, 193, 0.16) 0%, transparent 35%),
+    radial-gradient(circle at 50% 50%, rgba(82, 183, 136, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 85% 85%, rgba(45, 106, 79, 0.25) 0%, transparent 45%),
+    radial-gradient(circle at 10% 90%, rgba(183, 228, 199, 0.15) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: var(--color-maize);
+  color: #0f1412;
+}
+
+a {
+  color: inherit;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.container-editorial {
+  width: 100%;
+  max-width: 78rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .container-editorial {
+    padding-inline: 2.5rem;
+  }
+}
+
+.rule {
+  border-top: 1px solid var(--color-paper-line);
+}
+
+.focus-ring:focus-visible {
+  outline: 3px solid var(--color-savanna);
+  outline-offset: 2px;
+}
+
+/* Utility for line-clamping card copy without extra plugins */
+.clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
