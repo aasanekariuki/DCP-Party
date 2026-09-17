@@ -603,11 +603,11 @@ export default function AboutPage() {
             </p>
 
             <div className="mt-7 flex flex-wrap items-center gap-3">
-              <VerificationBadge status="pending-verification" />
+              {/* <VerificationBadge status="pending-verification" /> */}
 
               <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-mint-bright,#52B788)]/20 bg-white/[0.04] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/65">
                 <CircleDot className="h-3 w-3 text-[var(--color-mint-bright,#52B788)]" />
-                Source pending
+                ITS HERE! DCP Kenya officially registered under Certificate Number 103.
               </span>
             </div>
           </motion.div>
