@@ -98,33 +98,31 @@ export interface EventRecord {
 }
 
 export interface PublicDocument {
-  slug: string;
-  url: string | undefined;
-  downloadable: string | undefined;
-  publishedAt: import("react").JSX.Element;
   id: string;
   title: string;
   description?: string;
   category: string;
   date?: string;
+  slug?: string;
+  url?: string;
+  downloadable?: boolean;
+  publishedAt?: string; // ✅ Ensure string type
   fileUrl?: string;
   fileType?: string;
   source?: string;
   verificationStatus: VerificationStatus;
 }
-
 export interface MediaAsset {
-  tags: string[];
-  url: any;
   id: string;
   src: string;
   alt: string;
+  url?: string;
   title?: string;
   description?: string;
   category: string;
   date?: string;
   location?: string;
-  
+  tags?: string[];
   photographer?: string;
   rightsNotice?: string;
   verificationStatus: VerificationStatus;
