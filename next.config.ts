@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
       // 3. Match any domain ending with a specific extension
       {
         protocol: "https",
-        hostname: "**.cdn.com",
+        hostname: "dcphazina.com",
       },
       // 4. Wildcard matching any path under a specific domain
       {

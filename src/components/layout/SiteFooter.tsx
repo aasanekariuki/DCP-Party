@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   motion,
   useReducedMotion,
@@ -350,7 +351,7 @@ export function SiteFooter() {
         }
       >
         <div
-          className="absolute -inset-10 bg-cover bg-center opacity-[0.035] mix-blend-multiply"
+          className="absolute -inset-10 bg-cover bg-center opacity-70 mix-blend-multiply"
           style={{
             backgroundImage:
               "url('https://peopledaily.digital/wp-content/uploads/2025/06/Screenshot-2025-06-07-063753-768x528.png')",
@@ -499,7 +500,15 @@ export function SiteFooter() {
                   className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[var(--color-mint-bright,#52B788)]/40 bg-[var(--color-savanna-deep,#1B4332)] font-display text-base font-bold text-white shadow-md"
                 >
                   <span className="absolute inset-0 bg-gradient-to-br from-[var(--color-mint-bright,#52B788)]/20 to-transparent" />
-                  <span className="relative">D</span>
+<div className="relative flex h-full w-full items-center justify-center p-1">
+  <Image
+    src="https://dcphazina.com/DCP_logo.png" // Replace with your image path or URL
+    alt="Logo"
+    width={40}     // Adjust dimensions to fit your container
+    height={24}
+    className="h-auto w-auto max-h-full object-contain"
+  />
+</div>
                 </motion.div>
 
                 <div className="flex flex-col">
@@ -508,15 +517,15 @@ export function SiteFooter() {
                   </span>
 
                   <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-mint-soft,#2D6A4F)]">
-                    Civic Platform
+                    Skiza mwananchi
                   </span>
                 </div>
               </Link>
 
               {/* Description */}
               <p className="relative z-10 mt-5 max-w-sm text-sm leading-6 text-[var(--color-ink-soft,#64748B)]">
-                A civic platform for exploring identity, leadership, public
-                priorities, and information.
+                Democracy for the Citizens Party is a citizen-centred political party committed to listening, justice, accountability, inclusion and inclusive national development.
+
               </p>
 
               {/* Status chips */}
