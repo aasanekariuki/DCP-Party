@@ -83,11 +83,15 @@ export interface EventRecord {
   slug: string;
   description: string;
   date: string;
+  time?: string;
   endDate?: string;
   location?: string;
+  county?: string;
   category: string;
   image?: string;
   registrationUrl?: string;
+  accessType?: string;
+  isUpcoming: boolean;
   source?: string;
   status: "upcoming" | "ongoing" | "completed" | "cancelled";
   verificationStatus: VerificationStatus;
@@ -97,7 +101,6 @@ export interface PublicDocument {
   slug: string;
   url: string | undefined;
   downloadable: string | undefined;
-  publishedAt: string | number | Date;
   publishedAt: import("react").JSX.Element;
   id: string;
   title: string;
@@ -111,6 +114,8 @@ export interface PublicDocument {
 }
 
 export interface MediaAsset {
+  tags: string[];
+  url: any;
   id: string;
   src: string;
   alt: string;
@@ -119,6 +124,7 @@ export interface MediaAsset {
   category: string;
   date?: string;
   location?: string;
+  
   photographer?: string;
   rightsNotice?: string;
   verificationStatus: VerificationStatus;
