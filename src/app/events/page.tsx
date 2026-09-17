@@ -1,15 +1,19 @@
 // src/app/events/page.tsx
 
+"use client";
+
 import type { Metadata } from "next";
 import Link from "next/link";
-
+import {
+  motion,
+  useReducedMotion,
+} from "framer-motion";
 import { Section } from "@/components/layout/PageContainer";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { VerificationBadge } from "@/components/ui/VerificationBadge";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Button } from "@/components/ui/Button";
 import { getEvents } from "@/data/events";
-
 import {
   CalendarDays,
   MapPin,
@@ -28,53 +32,51 @@ import {
   CalendarCheck2,
 } from "lucide-react";
 
-import * as motion from "framer-motion/m";
-
-export const metadata: Metadata = {
-  title: "Events",
-};
-
 const ease = [0.16, 1, 0.3, 1] as const;
 
-/* -------------------------------------------------------------------------- */
-/* AMBIENT VISUAL SYSTEM                                                      */
-/* -------------------------------------------------------------------------- */
+type EventRecord = ReturnType<typeof getEvents>[number];
 
 function FloatingOrb({
   className = "",
-  size = 220,
-  variant = "mint",
+  size = 280,
+  delay = 0,
 }: {
   className?: string;
   size?: number;
-  variant?: "mint" | "jungle";
+  delay?: number;
 }) {
-  const gradients = {
-    mint:
-      "bg-[radial-gradient(circle,rgba(82,183,136,0.16)_0%,rgba(45,106,79,0.07)_44%,transparent_72%)]",
-    jungle:
-      "bg-[radial-gradient(circle,rgba(27,67,50,0.17)_0%,rgba(45,106,79,0.06)_46%,transparent_74%)]",
-  };
+  const reduceMotion = useReducedMotion();
 
   return (
     <motion.div
       aria-hidden="true"
-      className={`pointer-events-none absolute rounded-full blur-3xl ${gradients[variant]} ${className}`}
+      className={`pointer-events-none absolute rounded-full blur-3xl ${className}`}
       style={{
         width: size,
         height: size,
+        background:
+          "radial-gradient(circle, rgba(82,183,136,0.16) 0%, rgba(45,106,79,0.06) 48%, transparent 72%)",
       }}
-      animate={{
-        scale: [1, 1.1, 1],
-        opacity: [0.3, 0.62, 0.3],
-        x: [0, 10, 0],
-        y: [0, -12, 0],
-      }}
-      transition={{
-        duration: 9,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
+      animate={
+        reduceMotion
+          ? undefined
+          : {
+              scale: [1, 1.12, 1],
+              opacity: [0.3, 0.62, 0.3],
+              x: [0, 12, 0],
+              y: [0, -14, 0],
+            }
+      }
+      transition={
+        reduceMotion
+          ? undefined
+          : {
+              duration: 10,
+              delay,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }
+      }
     />
   );
 }
@@ -90,33 +92,39 @@ function FloatingParticle({
   duration?: number;
   shape?: "circle" | "diamond" | "ring";
 }) {
-  const shapeStyles = {
-    circle:
-      "rounded-full bg-mint-bright/50 shadow-[0_0_13px_rgba(82,183,136,0.45)]",
-    diamond:
-      "rotate-45 rounded-[2px] border border-mint-bright/40 bg-mint-bright/10",
-    ring:
-      "rounded-full border border-mint-bright/30 bg-transparent",
-  };
+  const reduceMotion = useReducedMotion();
+
+  const shapeClass =
+    shape === "circle"
+      ? "rounded-full bg-[var(--color-mint-bright,#52B788)]/55"
+      : shape === "diamond"
+        ? "rotate-45 rounded-[3px] border border-[var(--color-mint-bright,#52B788)]/35 bg-[var(--color-mint-bright,#52B788)]/10"
+        : "rounded-full border border-[var(--color-mint-bright,#52B788)]/30";
 
   return (
     <motion.span
       aria-hidden="true"
-      className={`pointer-events-none absolute block ${shapeStyles[shape]} ${className}`}
-      animate={{
-        y: [0, -16, 0],
-        x: [0, 7, 0],
-        opacity: [0.2, 0.75, 0.2],
-        scale: [0.85, 1.12, 0.85],
-        rotate:
-          shape === "diamond" ? [45, 135, 45] : undefined,
-      }}
-      transition={{
-        duration,
-        delay,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
+      className={`pointer-events-none absolute block ${shapeClass} ${className}`}
+      animate={
+        reduceMotion
+          ? undefined
+          : {
+              y: [0, -18, 0],
+              x: [0, 7, 0],
+              opacity: [0.2, 0.7, 0.2],
+              scale: [0.85, 1.15, 0.85],
+            }
+      }
+      transition={
+        reduceMotion
+          ? undefined
+          : {
+              duration,
+              delay,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }
+      }
     />
   );
 }
@@ -130,25 +138,29 @@ function OrbitDecoration({
   className?: string;
   duration?: number;
 }) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <motion.div
       aria-hidden="true"
-      className={`pointer-events-none absolute rounded-full border border-mint-bright/15 ${className}`}
+      className={`pointer-events-none absolute rounded-full border border-[var(--color-mint-bright,#52B788)]/15 ${className}`}
       style={{
         width: size,
         height: size,
       }}
-      animate={{
-        rotate: 360,
-      }}
-      transition={{
-        duration,
-        repeat: Infinity,
-        ease: "linear",
-      }}
+      animate={reduceMotion ? undefined : { rotate: 360 }}
+      transition={
+        reduceMotion
+          ? undefined
+          : {
+              duration,
+              repeat: Infinity,
+              ease: "linear",
+            }
+      }
     >
-      <span className="absolute -right-1 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-mint-bright shadow-[0_0_14px_rgba(82,183,136,0.7)]" />
-      <span className="absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-mint-bright/70" />
+      <span className="absolute -right-1 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-[var(--color-mint-bright,#52B788)] shadow-[0_0_14px_rgba(82,183,136,0.7)]" />
+      <span className="absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--color-mint-bright,#52B788)]/70" />
     </motion.div>
   );
 }
@@ -157,13 +169,15 @@ function BackgroundGrid() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 opacity-[0.16]"
+      className="pointer-events-none absolute inset-0 opacity-[0.035]"
       style={{
-        backgroundImage: `
-          linear-gradient(to right, rgba(82,183,136,0.12) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(82,183,136,0.12) 1px, transparent 1px)
-        `,
-        backgroundSize: "42px 42px",
+        backgroundImage:
+          "linear-gradient(to right, rgba(82,183,136,0.45) 1px, transparent 1px), linear-gradient(to bottom, rgba(82,183,136,0.45) 1px, transparent 1px)",
+        backgroundSize: "44px 44px",
+        maskImage:
+          "linear-gradient(to bottom, transparent, black 8%, black 92%, transparent)",
+        WebkitMaskImage:
+          "linear-gradient(to bottom, transparent, black 8%, black 92%, transparent)",
       }}
     />
   );
@@ -174,49 +188,48 @@ function CornerBrackets() {
     <>
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute left-0 top-0 h-5 w-5 border-l border-t border-mint-bright/40 transition-all duration-300 group-hover:h-7 group-hover:w-7 group-hover:border-mint-bright"
+        className="pointer-events-none absolute left-0 top-0 h-4 w-4 border-l-2 border-t-2 border-[var(--color-mint-bright,#52B788)]/30 transition-all duration-300 group-hover:h-6 group-hover:w-6 group-hover:border-[var(--color-mint-bright,#52B788)]/70"
       />
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute right-0 top-0 h-5 w-5 border-r border-t border-mint-bright/40 transition-all duration-300 group-hover:h-7 group-hover:w-7 group-hover:border-mint-bright"
+        className="pointer-events-none absolute right-0 top-0 h-4 w-4 border-r-2 border-t-2 border-[var(--color-mint-bright,#52B788)]/30 transition-all duration-300 group-hover:h-6 group-hover:w-6 group-hover:border-[var(--color-mint-bright,#52B788)]/70"
       />
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 left-0 h-5 w-5 border-b border-l border-mint-bright/40 transition-all duration-300 group-hover:h-7 group-hover:w-7 group-hover:border-mint-bright"
+        className="pointer-events-none absolute bottom-0 left-0 h-4 w-4 border-b-2 border-l-2 border-[var(--color-mint-bright,#52B788)]/30 transition-all duration-300 group-hover:h-6 group-hover:w-6 group-hover:border-[var(--color-mint-bright,#52B788)]/70"
       />
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 right-0 h-5 w-5 border-b border-r border-mint-bright/40 transition-all duration-300 group-hover:h-7 group-hover:w-7 group-hover:border-mint-bright"
+        className="pointer-events-none absolute bottom-0 right-0 h-4 w-4 border-b-2 border-r-2 border-[var(--color-mint-bright,#52B788)]/30 transition-all duration-300 group-hover:h-6 group-hover:w-6 group-hover:border-[var(--color-mint-bright,#52B788)]/70"
       />
     </>
   );
 }
 
 function SignalLine() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute left-0 right-0 top-1/2 hidden h-px lg:block"
+      className="relative h-px w-full overflow-hidden bg-[var(--color-mint-bright,#52B788)]/12"
     >
-      <motion.div
-        className="h-px bg-gradient-to-r from-transparent via-mint-bright/20 to-transparent"
-        animate={{
-          opacity: [0.2, 0.7, 0.2],
-          scaleX: [0.8, 1, 0.8],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+      <motion.span
+        className="absolute left-0 top-0 h-px w-28 bg-gradient-to-r from-transparent via-[var(--color-mint-bright,#52B788)] to-transparent"
+        animate={reduceMotion ? undefined : { x: ["-120%", "500%"] }}
+        transition={
+          reduceMotion
+            ? undefined
+            : {
+                duration: 4.5,
+                repeat: Infinity,
+                ease: "linear",
+              }
+        }
       />
     </div>
   );
 }
-
-/* -------------------------------------------------------------------------- */
-/* HERO DATA METRIC                                                           */
-/* -------------------------------------------------------------------------- */
 
 function RegistryMetric({
   icon: Icon,
@@ -229,55 +242,59 @@ function RegistryMetric({
   value: number;
   delay: number;
 }) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={
+        reduceMotion
+          ? false
+          : {
+              opacity: 0,
+              y: 12,
+            }
+      }
+      animate={{
+        opacity: 1,
+        y: 0,
+      }}
       transition={{
         duration: 0.55,
         delay,
         ease,
       }}
-      whileHover={{
-        y: -3,
-        scale: 1.015,
-      }}
-      className="group relative overflow-hidden rounded-xl border rule bg-paper/70 px-4 py-3 backdrop-blur-md"
+      whileHover={
+        reduceMotion
+          ? undefined
+          : {
+              y: -3,
+              scale: 1.015,
+            }
+      }
+      className="group relative overflow-hidden rounded-xl border border-[var(--color-mint-bright,#52B788)]/20 bg-[var(--color-paper-raised,#F4F1EA)]/85 px-4 py-3.5 backdrop-blur-md transition-colors duration-300 hover:border-[var(--color-mint-bright,#52B788)]/45"
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-mint-bright/[0.05] via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-mint-bright,#52B788)]/[0.05] via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
       <div className="relative flex items-center gap-3">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-mint-bright/20 bg-mint-bright/10 text-mint-bright">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-[var(--color-mint-bright,#52B788)]/20 bg-[var(--color-mint-bright,#52B788)]/10 text-[var(--color-mint-soft,#2D6A4F)]">
           <Icon className="h-4 w-4" />
         </div>
 
         <div className="min-w-0">
-          <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-ink-soft/75">
+          <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-[var(--color-ink-soft,#64748B)]">
             {label}
           </p>
 
-          <motion.p
-            className="mt-0.5 font-display text-lg font-bold text-ink"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              delay: delay + 0.15,
-              duration: 0.35,
-            }}
-          >
+          <p className="mt-0.5 font-display text-xl font-bold text-[var(--color-ink,#1A1A1A)]">
             {value}
-          </motion.p>
+          </p>
         </div>
 
-        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-mint-bright shadow-[0_0_9px_rgba(82,183,136,0.7)]" />
+        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-[var(--color-mint-bright,#52B788)] shadow-[0_0_9px_rgba(82,183,136,0.7)]" />
       </div>
     </motion.div>
   );
 }
-
-/* -------------------------------------------------------------------------- */
-/* SECTION HEADER                                                             */
-/* -------------------------------------------------------------------------- */
 
 function SectionHeader({
   icon: Icon,
@@ -292,244 +309,283 @@ function SectionHeader({
   count: number;
   countLabel: string;
 }) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 14 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
+      initial={
+        reduceMotion
+          ? false
+          : {
+              opacity: 0,
+              y: 14,
+            }
+      }
+      whileInView={
+        reduceMotion
+          ? undefined
+          : {
+              opacity: 1,
+              y: 0,
+            }
+      }
+      viewport={{
+        once: true,
+        margin: "-40px",
+      }}
       transition={{
         duration: 0.6,
         ease,
       }}
-      className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"
+      className="mb-6 flex flex-col gap-3 sm:mb-7 sm:flex-row sm:items-end sm:justify-between"
     >
       <div>
-        <div className="mb-2 flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.17em] text-mint-soft">
-          <Icon className="h-3.5 w-3.5 text-mint-bright" />
+        <div className="mb-2 flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.17em] text-[var(--color-mint-soft,#2D6A4F)]">
+          <Icon className="h-3.5 w-3.5 text-[var(--color-mint-bright,#52B788)]" />
           <span>{eyebrow}</span>
         </div>
 
-        <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+        <h2 className="font-display text-2xl font-bold tracking-tight text-[var(--color-ink,#1A1A1A)] sm:text-3xl">
           {title}
         </h2>
       </div>
 
-      <div className="inline-flex w-fit items-center gap-2 rounded-full border rule bg-paper-raised px-3 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-soft">
-        <span className="h-1.5 w-1.5 rounded-full bg-mint-bright shadow-[0_0_8px_rgba(82,183,136,0.7)]" />
+      <div className="inline-flex w-fit items-center gap-2 rounded-full border border-[var(--color-mint-bright,#52B788)]/20 bg-[var(--color-paper-raised,#F4F1EA)] px-3 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--color-ink-soft,#64748B)]">
+        <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-mint-bright,#52B788)] shadow-[0_0_8px_rgba(82,183,136,0.7)]" />
         {count} {countLabel}
       </div>
     </motion.div>
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* EVENT CARD                                                                 */
-/* -------------------------------------------------------------------------- */
-
 function EventCard({
   event,
   index,
   archived = false,
 }: {
-  event: ReturnType<typeof getEvents>[number];
+  event: EventRecord;
   index: number;
   archived?: boolean;
 }) {
+  const reduceMotion = useReducedMotion();
+
+  const href = event.slug
+    ? `/events/${event.slug}`
+    : event.id
+      ? `/events/${event.id}`
+      : "/events";
+
   return (
     <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-45px" }}
+      initial={
+        reduceMotion
+          ? false
+          : {
+              opacity: 0,
+              y: 22,
+            }
+      }
+      whileInView={
+        reduceMotion
+          ? undefined
+          : {
+              opacity: 1,
+              y: 0,
+            }
+      }
+      viewport={{
+        once: true,
+        amount: 0.08,
+      }}
       transition={{
         duration: 0.55,
-        delay: Math.min(index * 0.06, 0.3),
+        delay: Math.min(index * 0.055, 0.25),
         ease,
       }}
-      whileHover={{
-        y: -5,
-        transition: {
-          duration: 0.25,
-          ease,
-        },
-      }}
-      className={`group relative flex min-h-[270px] flex-col justify-between overflow-hidden rounded-2xl border rule p-5 backdrop-blur-md transition-all duration-300 sm:p-6 ${
+      whileHover={
+        reduceMotion
+          ? undefined
+          : {
+              y: -5,
+            }
+      }
+      className={`group relative flex min-h-[265px] flex-col overflow-hidden rounded-2xl border p-5 backdrop-blur-md transition-all duration-300 sm:p-6 ${
         archived
-          ? "bg-paper-raised/40 opacity-[0.88] hover:border-mint-bright/50 hover:bg-paper hover:opacity-100"
-          : "bg-paper-raised/70 shadow-[0_10px_30px_rgba(27,67,50,0.04)] hover:border-mint-bright hover:bg-paper hover:shadow-[0_18px_45px_rgba(27,67,50,0.08)]"
+          ? "border-[var(--color-mint-bright,#52B788)]/15 bg-[var(--color-paper-raised,#F4F1EA)]/55 hover:border-[var(--color-mint-bright,#52B788)]/40 hover:bg-[var(--color-paper-raised,#F4F1EA)]/85"
+          : "border-[var(--color-mint-bright,#52B788)]/20 bg-[var(--color-paper-raised,#F4F1EA)]/80 shadow-[0_12px_35px_rgba(27,67,50,0.045)] hover:border-[var(--color-mint-bright,#52B788)]/55 hover:bg-[var(--color-paper-raised,#F4F1EA)] hover:shadow-[0_20px_45px_rgba(27,67,50,0.08)]"
       }`}
     >
       <CornerBrackets />
 
-      {/* Card scan texture */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(82,183,136,0.07) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(82,183,136,0.07) 1px, transparent 1px)
-          `,
+          backgroundImage:
+            "linear-gradient(to right, rgba(82,183,136,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(82,183,136,0.06) 1px, transparent 1px)",
           backgroundSize: "28px 28px",
         }}
       />
 
-      {/* Ambient card glow */}
-      <motion.div
+      <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(82,183,136,0.13),transparent_70%)] opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
+        className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(82,183,136,0.13), transparent 70%)",
+        }}
       />
 
-      <div className="relative z-[1]">
-        <div className="mb-4 flex items-start justify-between gap-3">
+      <div className="relative z-[1] flex h-full flex-col">
+        <div className="flex items-start justify-between gap-3">
           <span
             className={`rounded-full border px-3 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.13em] ${
               archived
-                ? "rule bg-paper-raised text-ink-soft"
-                : "border-mint-bright/25 bg-mint-bright/10 text-mint-bright"
+                ? "border-[var(--color-mint-bright,#52B788)]/15 bg-[var(--color-paper-raised,#F4F1EA)] text-[var(--color-ink-soft,#64748B)]"
+                : "border-[var(--color-mint-bright,#52B788)]/25 bg-[var(--color-mint-bright,#52B788)]/10 text-[var(--color-mint-soft,#2D6A4F)]"
             }`}
           >
-            {event.category}
+            {event.category || "Public event"}
           </span>
 
           <VerificationBadge status={event.verificationStatus} />
         </div>
 
-        <h3 className="pr-4 font-display text-xl font-bold leading-snug text-ink transition-colors duration-300 group-hover:text-mint-soft sm:text-[1.35rem]">
+        <h3 className="mt-4 pr-4 font-display text-xl font-bold leading-snug text-[var(--color-ink,#1A1A1A)] transition-colors duration-300 group-hover:text-[var(--color-mint-soft,#2D6A4F)] sm:text-[1.35rem]">
           {event.title}
         </h3>
 
-        <motion.div
+        <div
           aria-hidden="true"
-          className="mt-3 h-px w-12 origin-left bg-gradient-to-r from-mint-bright to-transparent"
-          initial={{ scaleX: 0.65, opacity: 0.45 }}
-          whileInView={{ scaleX: 1, opacity: 0.8 }}
-          viewport={{ once: true }}
-          transition={{
-            duration: 0.5,
-            delay: 0.15 + index * 0.04,
-            ease,
-          }}
+          className="mt-3 h-px w-12 bg-gradient-to-r from-[var(--color-mint-bright,#52B788)] to-transparent transition-all duration-300 group-hover:w-20"
         />
-      </div>
 
-      <div className="relative z-[1] mt-7 space-y-3 border-t rule pt-4 text-xs text-ink-soft">
-        <div className="flex items-start gap-2.5">
-          <CalendarDays
-            size={14}
-            className="mt-0.5 shrink-0 text-mint-bright"
-          />
-
-          <div className="min-w-0">
-            <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.12em] text-ink-soft/65">
-              Date
-            </p>
-            <p className="mt-0.5 font-medium text-ink-soft">
-              {event.date}
-            </p>
-          </div>
-        </div>
-
-        {event.location && (
+        <div className="mt-auto space-y-3 border-t border-[var(--color-mint-bright,#52B788)]/15 pt-4 text-xs text-[var(--color-ink-soft,#64748B)]">
           <div className="flex items-start gap-2.5">
-            <MapPin
+            <CalendarDays
               size={14}
-              className="mt-0.5 shrink-0 text-mint-bright"
+              className="mt-0.5 shrink-0 text-[var(--color-mint-soft,#2D6A4F)]"
             />
 
             <div className="min-w-0">
-              <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.12em] text-ink-soft/65">
-                Location
+              <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.12em] text-[var(--color-ink-soft,#64748B)]">
+                Date
               </p>
-              <p className="mt-0.5 truncate font-medium text-ink-soft">
-                {event.location}
+
+              <p className="mt-0.5 font-medium text-[var(--color-ink,#1A1A1A)]">
+                {event.date}
               </p>
             </div>
           </div>
-        )}
-      </div>
 
-      <div className="relative z-[1] mt-5 flex items-center justify-between">
-        <span className="inline-flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.13em] text-ink-soft/70">
-          {archived ? (
-            <>
-              <Archive className="h-3.5 w-3.5 text-ink-faint" />
-              Archived record
-            </>
-          ) : (
-            <>
-              <CalendarCheck2 className="h-3.5 w-3.5 text-mint-bright" />
-              Confirmed event
-            </>
+          {event.location && (
+            <div className="flex items-start gap-2.5">
+              <MapPin
+                size={14}
+                className="mt-0.5 shrink-0 text-[var(--color-mint-soft,#2D6A4F)]"
+              />
+
+              <div className="min-w-0">
+                <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.12em] text-[var(--color-ink-soft,#64748B)]">
+                  Location
+                </p>
+
+                <p className="mt-0.5 truncate font-medium text-[var(--color-ink,#1A1A1A)]">
+                  {event.location}
+                </p>
+              </div>
+            </div>
           )}
-        </span>
+        </div>
 
-        <motion.span
-          whileHover={{
-            x: 3,
-            y: -2,
-          }}
-          className="flex h-8 w-8 items-center justify-center rounded-lg border rule bg-paper/60 text-mint-bright transition-colors duration-300 group-hover:border-mint-bright/40 group-hover:bg-mint-bright/10"
-        >
-          <ArrowUpRight className="h-4 w-4" />
-        </motion.span>
+        <div className="mt-5 flex items-center justify-between">
+          <span className="inline-flex items-center gap-2 font-mono text-[9px] font-semibold uppercase tracking-[0.13em] text-[var(--color-ink-soft,#64748B)]">
+            {archived ? (
+              <>
+                <Archive className="h-3.5 w-3.5 opacity-60" />
+                Archived record
+              </>
+            ) : (
+              <>
+                <CalendarCheck2 className="h-3.5 w-3.5 text-[var(--color-mint-soft,#2D6A4F)]" />
+                Confirmed event
+              </>
+            )}
+          </span>
+
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--color-mint-bright,#52B788)]/20 bg-[var(--color-paper,#FAF9F6)]/70 text-[var(--color-mint-soft,#2D6A4F)] transition-all duration-300 group-hover:border-[var(--color-mint-bright,#52B788)]/50 group-hover:bg-[var(--color-mint-bright,#52B788)]/10 group-hover:text-[var(--color-mint-bright,#52B788)]">
+            <ArrowUpRight className="h-4 w-4" />
+          </span>
+        </div>
       </div>
 
       <Link
-        href={`/events/${event.slug}`}
+        href={href}
         aria-label={
           archived
             ? `View archived event details for ${event.title}`
             : `View event details for ${event.title}`
         }
-        className="absolute inset-0 z-10 rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-mint-bright focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+        className="absolute inset-0 z-10 rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-mint-bright,#52B788)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-paper,#FAF9F6)]"
       />
     </motion.article>
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* EMPTY STATE                                                                */
-/* -------------------------------------------------------------------------- */
-
 function EventsEmptyState() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <motion.div
-      initial={{
-        opacity: 0,
-        scale: 0.985,
-      }}
-      whileInView={{
-        opacity: 1,
-        scale: 1,
-      }}
+      initial={
+        reduceMotion
+          ? false
+          : {
+              opacity: 0,
+              scale: 0.985,
+            }
+      }
+      whileInView={
+        reduceMotion
+          ? undefined
+          : {
+              opacity: 1,
+              scale: 1,
+            }
+      }
       viewport={{
         once: true,
-        margin: "-40px",
+        amount: 0.2,
       }}
       transition={{
         duration: 0.55,
         ease,
       }}
-      className="group relative overflow-hidden rounded-2xl border rule bg-paper-raised/45 p-7 backdrop-blur-sm sm:p-9"
+      className="group relative overflow-hidden rounded-2xl border border-[var(--color-mint-bright,#52B788)]/20 bg-[var(--color-paper-raised,#F4F1EA)]/60 p-7 backdrop-blur-md sm:p-9"
     >
       <CornerBrackets />
 
-      <div className="absolute right-8 top-8 hidden h-20 w-20 rounded-full border border-mint-bright/10 sm:block">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute right-8 top-8 hidden h-20 w-20 rounded-full border border-[var(--color-mint-bright,#52B788)]/10 sm:block"
+      >
         <motion.span
-          className="absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-mint-bright"
-          animate={{
-            rotate: 360,
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "linear",
-          }}
+          className="absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--color-mint-bright,#52B788)]"
+          animate={reduceMotion ? undefined : { rotate: 360 }}
+          transition={
+            reduceMotion
+              ? undefined
+              : {
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: "linear",
+                }
+          }
         />
       </div>
 
       <div className="relative z-10">
-        <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-mint-bright/20 bg-mint-bright/10 text-mint-bright">
+        <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--color-mint-bright,#52B788)]/20 bg-[var(--color-mint-bright,#52B788)]/10 text-[var(--color-mint-soft,#2D6A4F)]">
           <CalendarDays className="h-5 w-5" />
         </div>
 
@@ -547,12 +603,10 @@ function EventsEmptyState() {
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/* PAGE                                                                       */
-/* -------------------------------------------------------------------------- */
-
 export default function EventsPage() {
-  const events = getEvents();
+  const reduceMotion = useReducedMotion();
+
+  const events = useMemoSafeEvents();
 
   const upcoming = events.filter(
     (event) =>
@@ -567,100 +621,86 @@ export default function EventsPage() {
   );
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-paper">
+    <main className="relative min-h-screen overflow-hidden bg-[var(--color-paper,#FAF9F6)] text-[var(--color-ink,#1A1A1A)]">
       <BackgroundGrid />
 
-      {/* Global ambient objects */}
-      <FloatingOrb
-        size={430}
-        variant="jungle"
-        className="-left-60 -top-36"
-      />
+      {/* Ambient objects */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <FloatingOrb
+          size={430}
+          delay={0}
+          className="-left-64 -top-40"
+        />
 
-      <FloatingOrb
-        size={360}
-        variant="mint"
-        className="-right-48 top-[24%]"
-      />
+        <FloatingOrb
+          size={340}
+          delay={1.5}
+          className="-right-48 top-[25%]"
+        />
 
-      <FloatingOrb
-        size={300}
-        variant="mint"
-        className="left-[28%] bottom-[14%] opacity-60"
-      />
+        <FloatingOrb
+          size={280}
+          delay={2.5}
+          className="left-[25%] bottom-[10%]"
+        />
 
-      <FloatingOrb
-        size={240}
-        variant="jungle"
-        className="-right-32 bottom-[-80px] opacity-50"
-      />
+        <OrbitDecoration
+          size={330}
+          duration={42}
+          className="-right-40 -top-32"
+        />
 
-      <OrbitDecoration
-        size={340}
-        duration={44}
-        className="-right-44 -top-36"
-      />
+        <OrbitDecoration
+          size={190}
+          duration={28}
+          className="-left-24 top-[40%]"
+        />
 
-      <OrbitDecoration
-        size={190}
-        duration={27}
-        className="-left-24 top-[34%]"
-      />
+        <FloatingParticle
+          className="left-[7%] top-[15%] h-2.5 w-2.5"
+          delay={0.2}
+          shape="circle"
+        />
 
-      <OrbitDecoration
-        size={130}
-        duration={20}
-        className="right-[18%] bottom-[10%] hidden sm:block"
-      />
+        <FloatingParticle
+          className="right-[12%] top-[18%] h-3.5 w-3.5"
+          delay={0.8}
+          duration={7}
+          shape="diamond"
+        />
 
-      <FloatingParticle
-        className="left-[7%] top-[13%] h-2.5 w-2.5"
-        delay={0.2}
-        duration={5.5}
-      />
+        <FloatingParticle
+          className="left-[18%] top-[53%] h-5 w-5"
+          delay={1.4}
+          duration={8}
+          shape="ring"
+        />
 
-      <FloatingParticle
-        className="right-[11%] top-[17%] h-3.5 w-3.5"
-        delay={0.8}
-        duration={7.5}
-        shape="diamond"
-      />
+        <FloatingParticle
+          className="right-[8%] bottom-[24%] h-2.5 w-2.5"
+          delay={0.4}
+          duration={5.5}
+          shape="circle"
+        />
+      </div>
 
-      <FloatingParticle
-        className="left-[18%] top-[48%] h-5 w-5"
-        delay={1.4}
-        duration={8}
-        shape="ring"
-      />
-
-      <FloatingParticle
-        className="right-[8%] bottom-[25%] h-2 w-2"
-        delay={0.4}
-        duration={5.8}
-      />
-
-      <FloatingParticle
-        className="left-[42%] bottom-[12%] h-3 w-3"
-        delay={1.7}
-        duration={6.8}
-        shape="diamond"
-      />
-
-      <SignalLine />
-
-      {/* ------------------------------------------------------------------ */}
-      {/* HERO                                                               */}
-      {/* ------------------------------------------------------------------ */}
-
+      {/* HERO */}
       <Section
         border={false}
-        className="relative z-10 pb-9 pt-10 sm:pb-11 sm:pt-14 lg:pb-12 lg:pt-16"
+        className="relative z-10 pb-8 pt-9 sm:pb-10 sm:pt-12 lg:pb-11 lg:pt-14"
       >
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 22,
-          }}
+          initial={
+            reduceMotion
+              ? false
+              : {
+                  opacity: 0,
+                  y: 20,
+                }
+          }
           animate={{
             opacity: 1,
             y: 0,
@@ -669,60 +709,51 @@ export default function EventsPage() {
             duration: 0.7,
             ease,
           }}
-          className="group relative overflow-hidden rounded-3xl border rule bg-paper-raised/65 p-6 shadow-[0_18px_55px_rgba(27,67,50,0.055)] backdrop-blur-md sm:p-8 lg:p-10"
+          className="group relative overflow-hidden rounded-3xl border border-[var(--color-mint-bright,#52B788)]/20 bg-[var(--color-paper-raised,#F4F1EA)]/82 p-6 shadow-[0_18px_55px_rgba(27,67,50,0.055)] backdrop-blur-md sm:p-8 lg:p-9"
         >
           <CornerBrackets />
 
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 opacity-[0.1]"
+            className="pointer-events-none absolute inset-0 opacity-[0.035]"
             style={{
-              backgroundImage: `
-                linear-gradient(to right, rgba(82,183,136,0.14) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(82,183,136,0.14) 1px, transparent 1px)
-              `,
+              backgroundImage:
+                "linear-gradient(to right, rgba(82,183,136,0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(82,183,136,0.4) 1px, transparent 1px)",
               backgroundSize: "36px 36px",
             }}
           />
 
-          <motion.div
-            aria-hidden="true"
-            className="pointer-events-none absolute -right-28 -top-28 h-64 w-64 rounded-full border border-mint-bright/10"
-            animate={{
-              rotate: 360,
-            }}
-            transition={{
-              duration: 38,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          >
-            <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-mint-bright shadow-[0_0_14px_rgba(82,183,136,0.7)]" />
-          </motion.div>
-
-          <div className="relative z-10 max-w-5xl">
+          <div className="relative z-10">
             <div className="flex flex-wrap items-center gap-3">
               <Eyebrow>Events</Eyebrow>
 
               <span
                 aria-hidden="true"
-                className="h-px w-7 bg-rule"
+                className="h-px w-8 bg-[var(--color-mint-bright,#52B788)]/25"
               />
 
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-mint-bright/30 bg-mint-bright/10 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.13em] text-mint-bright">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-mint-bright,#52B788)]/25 bg-[var(--color-mint-bright,#52B788)]/10 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.13em] text-[var(--color-mint-soft,#2D6A4F)]">
                 <motion.span
-                  animate={{
-                    scale: [1, 1.25, 1],
-                    opacity: [0.5, 1, 0.5],
-                  }}
-                  transition={{
-                    duration: 2.4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  className="h-1.5 w-1.5 rounded-full bg-mint-bright"
+                  animate={
+                    reduceMotion
+                      ? undefined
+                      : {
+                          scale: [1, 1.3, 1],
+                          opacity: [0.5, 1, 0.5],
+                        }
+                  }
+                  transition={
+                    reduceMotion
+                      ? undefined
+                      : {
+                          duration: 2.4,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }
+                  }
+                  className="h-1.5 w-1.5 rounded-full bg-[var(--color-mint-bright,#52B788)]"
                 />
-                <Sparkles className="h-3 w-3" />
+                <Sparkles className="h-3 w-3 text-[var(--color-mint-bright,#52B788)]" />
                 Live Registry
               </span>
             </div>
@@ -730,27 +761,29 @@ export default function EventsPage() {
             <div className="relative mt-5 max-w-4xl">
               <span
                 aria-hidden="true"
-                className="absolute -left-4 top-1/2 hidden h-16 w-0.5 -translate-y-1/2 bg-gradient-to-b from-transparent via-mint-bright to-transparent sm:block"
+                className="absolute -left-4 top-1/2 hidden h-16 w-0.5 -translate-y-1/2 bg-gradient-to-b from-transparent via-[var(--color-mint-bright,#52B788)] to-transparent sm:block"
               />
 
-              <h1 className="font-display text-4xl font-bold leading-[1.06] tracking-tight text-ink sm:text-5xl lg:text-6xl">
+              <h1 className="font-display text-4xl font-bold leading-[1.06] tracking-tight text-[var(--color-ink,#1A1A1A)] sm:text-5xl lg:text-6xl">
                 Public{" "}
-                <span className="relative inline-block text-mint-soft">
+                <span className="relative inline-block text-[var(--color-mint-soft,#2D6A4F)] [text-shadow:0_0_24px_rgba(82,183,136,0.16)]">
                   gatherings
                   <motion.span
                     aria-hidden="true"
-                    initial={{
-                      scaleX: 0,
-                    }}
-                    animate={{
-                      scaleX: 1,
-                    }}
+                    initial={
+                      reduceMotion
+                        ? false
+                        : {
+                            scaleX: 0,
+                          }
+                    }
+                    animate={{ scaleX: 1 }}
                     transition={{
-                      delay: 0.5,
+                      delay: 0.45,
                       duration: 0.7,
                       ease,
                     }}
-                    className="absolute -bottom-1 left-0 h-1 w-full origin-left bg-gradient-to-r from-mint-bright via-mint-soft to-transparent shadow-[0_0_14px_rgba(82,183,136,0.2)]"
+                    className="absolute -bottom-1 left-0 h-1 w-full origin-left bg-gradient-to-r from-[var(--color-mint-bright,#52B788)] via-[var(--color-mint-soft,#2D6A4F)] to-transparent"
                   />
                 </span>{" "}
                 and activities.
@@ -758,72 +791,76 @@ export default function EventsPage() {
 
               <motion.div
                 aria-hidden="true"
-                initial={{
-                  width: 0,
-                  opacity: 0,
-                }}
+                initial={
+                  reduceMotion
+                    ? false
+                    : {
+                        width: 0,
+                        opacity: 0,
+                      }
+                }
                 animate={{
                   width: "8rem",
                   opacity: 1,
                 }}
                 transition={{
-                  delay: 0.72,
+                  delay: 0.65,
                   duration: 0.7,
                   ease,
                 }}
-                className="mt-5 h-0.5 bg-gradient-to-r from-mint-bright via-mint-soft to-transparent"
+                className="mt-5 h-0.5 bg-gradient-to-r from-[var(--color-mint-bright,#52B788)] via-[var(--color-mint-soft,#2D6A4F)] to-transparent"
               />
             </div>
 
-            <p className="measure mt-6 max-w-3xl text-base leading-7 text-ink-soft sm:text-lg sm:leading-8">
-              Only confirmed, verified events are listed here. Explore
-              upcoming public workshops, assemblies, and historic archives.
-              <span className="font-semibold text-ink">
-                {" "}
-                Every record is presented as part of the public registry.
-              </span>
+            <p className="mt-5 max-w-3xl text-sm leading-7 text-[var(--color-ink-soft,#64748B)] sm:text-base sm:leading-8">
+              Explore{" "}
+              <span className="font-semibold text-[var(--color-ink,#1A1A1A)]">
+                confirmed public workshops, assemblies, and activities
+              </span>{" "}
+              recorded in the event registry. Each entry is presented
+              according to the information contained in its event record.
             </p>
 
-            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            <div className="mt-7 grid gap-3 sm:grid-cols-3">
               <RegistryMetric
                 icon={Clock}
                 label="Upcoming"
                 value={upcoming.length}
-                delay={0.15}
+                delay={0.12}
               />
 
               <RegistryMetric
                 icon={Archive}
                 label="Archived"
                 value={past.length}
-                delay={0.22}
+                delay={0.19}
               />
 
               <RegistryMetric
                 icon={Layers3}
                 label="Total registry"
                 value={events.length}
-                delay={0.29}
+                delay={0.26}
               />
             </div>
 
-            <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 border-t rule pt-5 font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-ink-soft/75">
+            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-[var(--color-mint-bright,#52B788)]/15 pt-4 font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-[var(--color-ink-soft,#64748B)]">
               <span className="inline-flex items-center gap-2">
-                <Radio className="h-3.5 w-3.5 text-mint-bright" />
+                <Radio className="h-3.5 w-3.5 text-[var(--color-mint-soft,#2D6A4F)]" />
                 Public registry
               </span>
 
-              <span className="hidden h-3 w-px bg-rule sm:block" />
+              <span className="hidden h-3 w-px bg-[var(--color-mint-bright,#52B788)]/20 sm:block" />
 
               <span className="inline-flex items-center gap-2">
-                <CheckCircle2 className="h-3.5 w-3.5 text-mint-bright" />
+                <CheckCircle2 className="h-3.5 w-3.5 text-[var(--color-mint-soft,#2D6A4F)]" />
                 Verification aware
               </span>
 
-              <span className="hidden h-3 w-px bg-rule sm:block" />
+              <span className="hidden h-3 w-px bg-[var(--color-mint-bright,#52B788)]/20 sm:block" />
 
               <span className="inline-flex items-center gap-2">
-                <Network className="h-3.5 w-3.5 text-mint-bright" />
+                <Network className="h-3.5 w-3.5 text-[var(--color-mint-soft,#2D6A4F)]" />
                 Structured records
               </span>
             </div>
@@ -831,12 +868,10 @@ export default function EventsPage() {
         </motion.div>
       </Section>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* UPCOMING                                                           */}
-      {/* ------------------------------------------------------------------ */}
-
+      {/* UPCOMING */}
       <Section
-        className="relative z-10 pb-12 pt-6 sm:pb-16 sm:pt-8"
+        border={false}
+        className="relative z-10 pb-11 pt-4 sm:pb-14 sm:pt-6"
       >
         <SectionHeader
           icon={Clock}
@@ -852,7 +887,7 @@ export default function EventsPage() {
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {upcoming.map((event, index) => (
               <EventCard
-                key={event.id}
+                key={event.id ?? `${event.title}-${index}`}
                 event={event}
                 index={index}
               />
@@ -861,26 +896,24 @@ export default function EventsPage() {
         )}
       </Section>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* PAST                                                                */}
-      {/* ------------------------------------------------------------------ */}
-
+      {/* PAST */}
       {past.length > 0 && (
         <Section
-          className="relative z-10 border-t rule pb-14 pt-10 sm:pb-18 sm:pt-12"
+          border={false}
+          className="relative z-10 border-t border-[var(--color-mint-bright,#52B788)]/15 pb-12 pt-9 sm:pb-14 sm:pt-11"
         >
           <SectionHeader
             icon={History}
             eyebrow="Historical registry"
             title="Past Records"
             count={past.length}
-            countLabel="Completed"
+            countLabel="Records"
           />
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {past.map((event, index) => (
               <EventCard
-                key={event.id}
+                key={event.id ?? `${event.title}-${index}`}
                 event={event}
                 index={index}
                 archived
@@ -890,113 +923,113 @@ export default function EventsPage() {
         </Section>
       )}
 
-      {/* ------------------------------------------------------------------ */}
-      {/* REGISTRY FOOTER SIGNAL                                             */}
-      {/* ------------------------------------------------------------------ */}
-
+      {/* REGISTRY FOOTER */}
       <Section
         border={false}
-        className="relative z-10 overflow-hidden bg-paper-raised pb-12 pt-2 sm:pb-14"
+        className="relative z-10 pb-10 pt-2 sm:pb-12"
       >
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 14,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
+          initial={
+            reduceMotion
+              ? false
+              : {
+                  opacity: 0,
+                  y: 12,
+                }
+          }
+          whileInView={
+            reduceMotion
+              ? undefined
+              : {
+                  opacity: 1,
+                  y: 0,
+                }
+          }
           viewport={{
             once: true,
-            margin: "-40px",
+            amount: 0.2,
           }}
           transition={{
             duration: 0.55,
             ease,
           }}
-          className="group relative overflow-hidden rounded-2xl border rule bg-paper/75 p-5 shadow-[0_14px_40px_rgba(27,67,50,0.05)] backdrop-blur-md sm:p-6"
+          className="group relative overflow-hidden rounded-2xl border border-[var(--color-mint-bright,#52B788)]/20 bg-[var(--color-paper-raised,#F4F1EA)]/75 p-5 shadow-[0_14px_40px_rgba(27,67,50,0.05)] backdrop-blur-md sm:p-6"
         >
           <CornerBrackets />
 
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 opacity-[0.12]"
-            style={{
-              backgroundImage: `
-                linear-gradient(to right, rgba(82,183,136,0.12) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(82,183,136,0.12) 1px, transparent 1px)
-              `,
-              backgroundSize: "30px 30px",
-            }}
-          />
-
-          <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center">
+          <div className="relative z-10 flex flex-col gap-5 sm:flex-row sm:items-center">
             <motion.div
-              whileHover={{
-                rotate: 8,
-                scale: 1.05,
-              }}
-              transition={{
-                duration: 0.25,
-                ease,
-              }}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-mint-bright/25 bg-mint-bright/10 text-mint-bright shadow-[0_0_24px_rgba(82,183,136,0.08)]"
+              whileHover={
+                reduceMotion
+                  ? undefined
+                  : {
+                      rotate: 8,
+                      scale: 1.05,
+                    }
+              }
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[var(--color-mint-bright,#52B788)]/25 bg-[var(--color-mint-bright,#52B788)]/10 text-[var(--color-mint-soft,#2D6A4F)]"
             >
               <ScanLine className="h-5 w-5" />
             </motion.div>
 
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2.5">
-                <span className="font-display text-sm font-bold uppercase tracking-[0.1em] text-ink">
+                <span className="font-display text-sm font-bold uppercase tracking-[0.1em] text-[var(--color-ink,#1A1A1A)]">
                   Event Registry
                 </span>
 
-                <span className="h-1 w-1 rounded-full bg-mint-bright shadow-[0_0_8px_rgba(82,183,136,0.7)]" />
+                <span className="h-1 w-1 rounded-full bg-[var(--color-mint-bright,#52B788)] shadow-[0_0_8px_rgba(82,183,136,0.7)]" />
 
-                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-mint-soft">
+                <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-[var(--color-mint-soft,#2D6A4F)]">
                   Public source layer
                 </span>
               </div>
 
-              <p className="mt-2 max-w-3xl text-xs leading-6 text-ink-soft sm:text-sm sm:leading-7">
+              <p className="mt-2 max-w-3xl text-xs leading-6 text-[var(--color-ink-soft,#64748B)] sm:text-sm sm:leading-7">
                 Events are displayed according to their current registry
-                status. Only information supplied through the event records
-                is presented as confirmed.
+                status. Information shown here is drawn from the available
+                event records.
               </p>
             </div>
 
-            <div className="hidden shrink-0 items-center gap-2 rounded-lg border rule bg-paper-raised/70 px-3 py-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-ink-soft sm:flex">
-              <Activity className="h-3.5 w-3.5 text-mint-bright" />
+            <div className="hidden shrink-0 items-center gap-2 rounded-lg border border-[var(--color-mint-bright,#52B788)]/20 bg-[var(--color-paper,#FAF9F6)]/70 px-3 py-2 font-mono text-[9px] font-semibold uppercase tracking-[0.14em] text-[var(--color-ink-soft,#64748B)] sm:flex">
+              <Activity className="h-3.5 w-3.5 text-[var(--color-mint-soft,#2D6A4F)]" />
               Registry active
             </div>
           </div>
 
-          <div className="relative mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 border-t rule pt-4">
-            <CalendarDays className="h-3.5 w-3.5 text-mint-bright" />
+          <div className="relative mt-5 border-t border-[var(--color-mint-bright,#52B788)]/15 pt-4">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <CalendarDays className="h-3.5 w-3.5 text-[var(--color-mint-soft,#2D6A4F)]" />
 
-            <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-ink-soft">
-              {events.length} total event records
-            </span>
+              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.15em] text-[var(--color-ink-soft,#64748B)]">
+                {events.length} total event records
+              </span>
 
-            <motion.span
-              aria-hidden="true"
-              className="hidden h-px w-20 bg-gradient-to-r from-mint-bright/40 to-transparent sm:ml-auto sm:block"
-              animate={{
-                opacity: [0.25, 0.8, 0.25],
-                scaleX: [0.7, 1, 0.7],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
+              <Orbit className="ml-auto h-4 w-4 text-[var(--color-mint-soft,#2D6A4F)]/45" />
+            </div>
 
-            <Orbit className="h-4 w-4 text-mint-bright/45" />
+            <div className="mt-4">
+              <SignalLine />
+            </div>
           </div>
         </motion.div>
       </Section>
-    </div>
+    </main>
   );
+}
+
+/*
+ * Keeps the page resilient if the data helper ever returns null/undefined.
+ * This also avoids executing data access during render in a way that can
+ * produce an empty page when the helper has no records.
+ */
+function useMemoSafeEvents(): EventRecord[] {
+  try {
+    const result = getEvents();
+
+    return Array.isArray(result) ? result : [];
+  } catch {
+    return [];
+  }
 }
