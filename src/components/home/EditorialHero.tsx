@@ -416,9 +416,9 @@ export function EditorialHero() {
               transition={{ duration: 0.65, delay: 0.62, ease }}
               className="mt-6 max-w-2xl text-base leading-7 text-[var(--color-ink-soft,#4A5568)] sm:text-lg sm:leading-8"
             >
-              Explore the party&apos;s history, its leadership, the policy
-              areas it publishes on, and the ways citizens, journalists, and
-              members can engage, all in one structured, sourced place.
+              Discover DCP's leadership, principles, public activities and commitment to citizen participation, accountable governance and inclusive national development.
+
+
             </motion.p>
 
             {/* CTA cluster */}
