@@ -63,7 +63,7 @@ function FloatingOrb({
     mint:
       "bg-[radial-gradient(circle,rgba(82,183,136,0.17)_0%,rgba(45,106,79,0.07)_45%,transparent_72%)]",
     jungle:
-      "bg-[radial-gradient(circle,rgba(27,67,50,0.18)_0%,rgba(45,106,79,0.06)_48%,transparent_74%)]",
+      "bg-[radial-gradient(circle,rgba(27,67,50,0.22)_0%,rgba(45,106,79,0.08)_48%,transparent_74%)]",
   };
 
   return (
@@ -191,8 +191,8 @@ function BackgroundGrid() {
       className="pointer-events-none absolute inset-0 opacity-[0.18]"
       style={{
         backgroundImage: `
-          linear-gradient(to right, rgba(82,183,136,0.12) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(82,183,136,0.12) 1px, transparent 1px)
+          linear-gradient(to right, rgba(149,213,178,0.08) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(149,213,178,0.08) 1px, transparent 1px)
         `,
         backgroundSize: "42px 42px",
       }}
@@ -246,12 +246,12 @@ function DataNode({
       viewport={{ once: true, margin: "-30px" }}
       transition={{ duration: 0.55, delay, ease }}
       whileHover={{ y: -3 }}
-      className="group relative overflow-hidden rounded-xl border rule bg-paper-raised/70 px-4 py-3 backdrop-blur-md"
+      className="group relative overflow-hidden rounded-xl border rule bg-paper-raised/70 px-4 py-3 backdrop-blur-md transition-all duration-300 hover:border-mint-bright/50"
     >
-      <div className="absolute inset-y-0 left-0 w-px bg-mint-bright/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <div className="absolute inset-y-0 left-0 w-px bg-mint-bright opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
       <div className="flex items-center gap-3">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-mint-bright/20 bg-mint-bright/10">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-mint-bright/25 bg-mint-bright/10">
           <Icon className="h-4 w-4 text-mint-bright" />
         </div>
 
@@ -278,8 +278,8 @@ function ExplorerStatus() {
           className="absolute inset-0"
           style={{
             backgroundImage: `
-              linear-gradient(to right, rgba(82,183,136,0.12) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(82,183,136,0.12) 1px, transparent 1px)
+              linear-gradient(to right, rgba(149,213,178,0.1) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(149,213,178,0.1) 1px, transparent 1px)
             `,
             backgroundSize: "24px 24px",
           }}
@@ -302,7 +302,7 @@ function ExplorerStatus() {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-mint-bright/20 bg-mint-bright/10"
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-mint-bright/25 bg-mint-bright/10"
           >
             <Database className="h-4 w-4 text-mint-bright" />
           </motion.div>
@@ -657,8 +657,8 @@ export default function DocumentsPage() {
               className="pointer-events-none absolute inset-0 opacity-[0.14]"
               style={{
                 backgroundImage: `
-                  linear-gradient(to right, rgba(82,183,136,0.12) 1px, transparent 1px),
-                  linear-gradient(to bottom, rgba(82,183,136,0.12) 1px, transparent 1px)
+                  linear-gradient(to right, rgba(149,213,178,0.1) 1px, transparent 1px),
+                  linear-gradient(to bottom, rgba(149,213,178,0.1) 1px, transparent 1px)
                 `,
                 backgroundSize: "30px 30px",
               }}
