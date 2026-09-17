@@ -4,7 +4,12 @@ import type { LeadershipProfile } from "@/lib/types";
 import { VerificationBadge } from "@/components/ui/VerificationBadge";
 import { UserCircle2 } from "lucide-react";
 
-export function LeadershipCard({ profile }: { profile: LeadershipProfile }) {
+interface LeadershipCardProps {
+  profile: LeadershipProfile;
+  priority?: boolean;
+}
+
+export function LeadershipCard({ profile, priority = false }: LeadershipCardProps) {
   return (
     <Link href={`/leadership/${profile.slug}`} className="flex flex-col gap-3 group">
       <div className="relative aspect-[4/5] bg-stone rounded-[4px] overflow-hidden border rule">
@@ -13,6 +18,8 @@ export function LeadershipCard({ profile }: { profile: LeadershipProfile }) {
             src={profile.image}
             alt={profile.name}
             fill
+            priority={priority}
+            loading={priority ? "eager" : "lazy"}
             className="object-cover object-top transition-transform duration-300 group-hover:scale-[1.03]"
             sizes="(max-width: 768px) 50vw, 25vw"
           />
