@@ -157,7 +157,7 @@ export function DocumentsExplorer({
       />
 
       {/* Control Bar: Search & Category Filter */}
-      <div className="relative z-10 mb-8 rounded-2xl border rule bg-paper-raised/80 p-4 shadow-[0_12px_32px_rgba(27,67,50,0.04)] backdrop-blur-md sm:p-5">
+      <div className="group relative z-10 mb-8 rounded-2xl border border-mint-bright/20 bg-paper-raised/70 p-4 shadow-[0_12px_32px_rgba(27,67,50,0.04)] backdrop-blur-md sm:p-5">
         <CornerBrackets />
 
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
@@ -174,13 +174,13 @@ export function DocumentsExplorer({
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search documents by title or keyword..."
-                className="w-full rounded-xl border rule bg-paper pl-10 pr-9 py-2.5 font-sans text-sm text-ink placeholder:text-ink-faint shadow-2xs transition-all duration-300 hover:border-mint-bright/60 focus:border-mint-bright focus:outline-none focus:ring-2 focus:ring-mint-bright/20"
+                className="w-full rounded-xl border border-mint-bright/20 bg-paper pl-10 pr-9 py-2.5 font-sans text-sm text-ink placeholder:text-ink-soft/50 shadow-2xs transition-all duration-300 hover:border-mint-bright/60 focus:border-mint-bright focus:outline-none focus:ring-2 focus:ring-mint-bright/20"
               />
               {query && (
                 <button
                   type="button"
                   onClick={() => setQuery("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-0.5 text-ink-soft hover:bg-stone/60 hover:text-ink"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-0.5 text-ink-soft hover:bg-paper-line hover:text-ink"
                   aria-label="Clear query search"
                 >
                   <X size={14} />
@@ -201,7 +201,7 @@ export function DocumentsExplorer({
               className={`relative rounded-xl border px-3.5 py-1.5 font-mono text-xs font-semibold tracking-wide transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint-bright ${
                 !category
                   ? "border-mint-bright bg-ink text-white shadow-xs"
-                  : "border-rule bg-paper text-ink-soft hover:border-mint-bright/40 hover:bg-paper-raised hover:text-ink"
+                  : "border-mint-bright/20 bg-paper text-ink-soft hover:border-mint-bright/40 hover:bg-paper-raised hover:text-ink"
               }`}
             >
               {!category && (
@@ -214,8 +214,8 @@ export function DocumentsExplorer({
               <span className="relative z-10 flex items-center gap-1.5">
                 All
                 <span
-                  className={`rounded-full px-1.5 py-0.2 font-mono text-[10px] ${
-                    !category ? "bg-white/20 text-white" : "bg-stone/60 text-ink-soft"
+                  className={`rounded-full px-1.5 py-0.5 font-mono text-[10px] ${
+                    !category ? "bg-white/20 text-white" : "bg-paper-line text-ink-soft"
                   }`}
                 >
                   {documents.length}
@@ -233,7 +233,7 @@ export function DocumentsExplorer({
                   className={`relative rounded-xl border px-3.5 py-1.5 font-mono text-xs font-semibold tracking-wide transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint-bright ${
                     isSelected
                       ? "border-mint-bright bg-ink text-white shadow-xs"
-                      : "border-rule bg-paper text-ink-soft hover:border-mint-bright/40 hover:bg-paper-raised hover:text-ink"
+                      : "border-mint-bright/20 bg-paper text-ink-soft hover:border-mint-bright/40 hover:bg-paper-raised hover:text-ink"
                   }`}
                 >
                   {isSelected && (
@@ -250,10 +250,10 @@ export function DocumentsExplorer({
                   <span className="relative z-10 flex items-center gap-1.5">
                     {c}
                     <span
-                      className={`rounded-full px-1.5 py-0.2 font-mono text-[10px] ${
+                      className={`rounded-full px-1.5 py-0.5 font-mono text-[10px] ${
                         isSelected
                           ? "bg-white/20 text-white"
-                          : "bg-stone/60 text-ink-soft"
+                          : "bg-paper-line text-ink-soft"
                       }`}
                     >
                       {count}
@@ -266,7 +266,7 @@ export function DocumentsExplorer({
         </div>
 
         {/* Filter Bar Meta */}
-        <div className="mt-3 flex items-center justify-between border-t rule pt-3 font-mono text-[10px] uppercase tracking-wider text-ink-soft">
+        <div className="mt-3 flex items-center justify-between border-t border-mint-bright/10 pt-3 font-mono text-[10px] uppercase tracking-wider text-ink-soft">
           <div className="flex items-center gap-2">
             <ScanLine className="h-3 w-3 text-mint-bright" />
             <span>
@@ -292,7 +292,7 @@ export function DocumentsExplorer({
           initial={{ opacity: 0, scale: 0.97 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, ease }}
-          className="relative rounded-2xl border rule bg-paper-raised/60 p-8 text-center backdrop-blur-md"
+          className="relative rounded-2xl border border-mint-bright/20 bg-paper-raised/60 p-8 text-center backdrop-blur-md"
         >
           <EmptyState
             title="No documents match your filter"
@@ -300,7 +300,7 @@ export function DocumentsExplorer({
           />
           <button
             onClick={handleClearFilters}
-            className="mt-4 inline-flex items-center gap-2 rounded-xl border rule bg-paper px-4 py-2 font-mono text-xs font-semibold text-ink shadow-2xs transition-all hover:border-mint-bright"
+            className="mt-4 inline-flex items-center gap-2 rounded-xl border border-mint-bright/20 bg-paper px-4 py-2 font-mono text-xs font-semibold text-ink shadow-2xs transition-all hover:border-mint-bright"
           >
             Clear all active filters
           </button>
@@ -317,7 +317,7 @@ export function DocumentsExplorer({
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.45, delay: idx * 0.04, ease }}
                 whileHover={{ y: -4 }}
-                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border rule bg-paper-raised/70 p-5 shadow-[0_10px_28px_rgba(27,67,50,0.04)] backdrop-blur-md transition-all duration-300 hover:border-mint-bright hover:bg-paper hover:shadow-[0_16px_40px_rgba(27,67,50,0.08)]"
+                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-mint-bright/20 bg-paper-raised/70 p-5 shadow-[0_10px_28px_rgba(27,67,50,0.04)] backdrop-blur-md transition-all duration-300 hover:border-mint-bright hover:bg-paper hover:shadow-[0_16px_40px_rgba(27,67,50,0.08)]"
               >
                 <CornerBrackets />
 
@@ -333,7 +333,7 @@ export function DocumentsExplorer({
                       <FileText size={20} strokeWidth={1.75} />
                     </div>
 
-                    <span className="rounded-full border rule bg-paper px-2.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-ink-soft">
+                    <span className="rounded-full border border-mint-bright/20 bg-paper px-2.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-ink-soft">
                       {doc.category}
                     </span>
                   </div>
@@ -349,7 +349,7 @@ export function DocumentsExplorer({
                 </div>
 
                 {/* Footer Link & Verification */}
-                <div className="relative mt-6 border-t rule pt-3.5">
+                <div className="relative mt-6 border-t border-mint-bright/10 pt-3.5">
                   <div className="flex items-center justify-between gap-2">
                     <VerificationBadge status={doc.verificationStatus} />
 
@@ -364,7 +364,7 @@ export function DocumentsExplorer({
                         <ArrowUpRight size={13} />
                       </a>
                     ) : (
-                      <span className="inline-flex items-center gap-1 rounded-md border rule bg-stone/40 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wide text-ink-faint">
+                      <span className="inline-flex items-center gap-1 rounded-md border border-mint-bright/20 bg-paper-line/40 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wide text-ink-soft">
                         <ShieldAlert className="h-3 w-3" />
                         Pending
                       </span>
