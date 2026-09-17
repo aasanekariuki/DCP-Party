@@ -35,12 +35,9 @@
   --color-mint-soft: #b7e4c7;
   --color-tea-green: #dcedc1;
 
-  /* Newsreader / IBM Plex Sans are the intended typefaces (see the
-     note in app/layout.tsx on why they aren't loaded via
-     next/font/google in this environment). These stacks approximate
-     their character with widely available system faces. */
-  --font-display: Iowan Old Style, "Palatino Linotype", Palatino, Georgia, serif;
-  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, Helvetica, Arial, sans-serif;
+  /* Typography: Meriwether for prominent display, Times New Roman for body */
+  --font-display: "Meriwether", Georgia, "Times New Roman", serif;
+  --font-body: "Times New Roman", Times, Georgia, serif;
 
   --radius-sm: 3px;
   --radius-md: 6px;
@@ -75,6 +72,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Bumping base font size slightly makes everything render larger and more visible globally */
+  font-size: 17px; 
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -95,6 +94,9 @@ body {
   background-color: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-body);
+  /* Enhanced line-height and letter spacing for readability at larger sizes */
+  line-height: 1.65;
+  letter-spacing: 0.01em;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 
@@ -119,6 +121,8 @@ a {
 
 .font-display {
   font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  font-weight: 700; /* Makes Meriwether headings punchier and bolder */
 }
 
 .container-editorial {
