@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRef } from "react";
 
 import {
@@ -282,12 +283,12 @@ export function LeadershipPreview() {
           className="absolute inset-[-6%]"
         >
           <div
-  className="absolute inset-0 bg-cover bg-center opacity-20"
-  style={{
-    backgroundImage:
-      "url('https://peopledaily.digital/wp-content/uploads/2025/06/Screenshot-2025-06-07-063753-768x528.png')",
-  }}
-/>
+            className="absolute inset-0 bg-cover bg-center opacity-20"
+            style={{
+              backgroundImage:
+                "url('https://peopledaily.digital/wp-content/uploads/2025/06/Screenshot-2025-06-07-063753-768x528.png')",
+            }}
+          />
         </motion.div>
 
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--color-paper,#FAF9F6),transparent_22%,transparent_78%,var(--color-paper,#FAF9F6))]" />
@@ -540,48 +541,62 @@ export function LeadershipPreview() {
                 <div className="relative z-10">
                   {/* Profile image / identity area */}
                   <div className="group/image relative aspect-[4/5] w-full overflow-hidden rounded-xl border border-[var(--color-mint-bright,#52B788)]/15 bg-[var(--color-savanna-deep,#1B4332)]/10">
-                    {/* Soft background image layer */}
-                    <div
-  aria-hidden="true"
-  className="absolute inset-0 bg-cover bg-center opacity-[0.9] transition-all duration-700 group-hover:opacity-[1]"
-  style={{
-    backgroundImage:
-      "url('https://dcphazina.com/icon0.svg?icon0.98f36649.svg')",
-  }}
-/>
-
-                    <div className="absolute inset-0 bg-[linear-gradient(145deg,rgba(244,241,234,0.7),rgba(27,67,50,0.16))]" />
-
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <motion.div
-                        animate={
-                          reduceMotion
-                            ? undefined
-                            : {
-                                y: [0, -5, 0],
-                                scale: [1, 1.04, 1],
-                              }
-                        }
-                        transition={
-                          reduceMotion
-                            ? undefined
-                            : {
-                                duration: 5,
-                                repeat: Infinity,
-                                ease: "easeInOut",
-                                delay: index * 0.4,
-                              }
-                        }
-                        className="relative flex h-20 w-20 items-center justify-center rounded-full border border-[var(--color-mint-bright,#52B788)]/20 bg-[var(--color-paper,#FAF9F6)]/50 shadow-sm backdrop-blur-md"
-                      >
-                        <UserCircle2
-                          className="h-14 w-14 text-[var(--color-mint-soft,#2D6A4F)]/65 transition-all duration-500 group-hover:scale-110 group-hover:text-[var(--color-mint-bright,#52B788)]"
-                          strokeWidth={1.15}
+                    {profile.image ? (
+                      <Image
+                        src={profile.image}
+                        alt={profile.name}
+                        fill
+                        priority={index < 2}
+                        loading={index < 2 ? "eager" : "lazy"}
+                        sizes="(max-width: 768px) 50vw, 25vw"
+                        className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <>
+                        {/* Placeholder watermark background */}
+                        <div
+                          aria-hidden="true"
+                          className="absolute inset-0 bg-cover bg-center opacity-[0.25] transition-all duration-700 group-hover:opacity-[0.35]"
+                          style={{
+                            backgroundImage:
+                              "url('https://dcphazina.com/icon0.svg?icon0.98f36649.svg')",
+                          }}
                         />
 
-                        <span className="absolute -right-1 top-1/2 h-2.5 w-2.5 rounded-full bg-[var(--color-mint-bright,#52B788)] shadow-[0_0_14px_rgba(82,183,136,0.55)]" />
-                      </motion.div>
-                    </div>
+                        <div className="absolute inset-0 bg-[linear-gradient(145deg,rgba(244,241,234,0.7),rgba(27,67,50,0.16))]" />
+
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <motion.div
+                            animate={
+                              reduceMotion
+                                ? undefined
+                                : {
+                                    y: [0, -5, 0],
+                                    scale: [1, 1.04, 1],
+                                  }
+                            }
+                            transition={
+                              reduceMotion
+                                ? undefined
+                                : {
+                                    duration: 5,
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                    delay: index * 0.4,
+                                  }
+                            }
+                            className="relative flex h-20 w-20 items-center justify-center rounded-full border border-[var(--color-mint-bright,#52B788)]/20 bg-[var(--color-paper,#FAF9F6)]/50 shadow-sm backdrop-blur-md"
+                          >
+                            <UserCircle2
+                              className="h-14 w-14 text-[var(--color-mint-soft,#2D6A4F)]/65 transition-all duration-500 group-hover:scale-110 group-hover:text-[var(--color-mint-bright,#52B788)]"
+                              strokeWidth={1.15}
+                            />
+
+                            <span className="absolute -right-1 top-1/2 h-2.5 w-2.5 rounded-full bg-[var(--color-mint-bright,#52B788)] shadow-[0_0_14px_rgba(82,183,136,0.55)]" />
+                          </motion.div>
+                        </div>
+                      </>
+                    )}
 
                     {/* Image scan line */}
                     <motion.div
