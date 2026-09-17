@@ -4,35 +4,35 @@ import type { NewsArticle } from "@/lib/types";
 export const newsArticles: NewsArticle[] = [
   {
     id: "news-1",
-    title: "Placeholder headline pending an approved article",
+    title: "DCP launches nationwide listening tour",
     slug: "placeholder-article-one",
     excerpt:
       "Placeholder excerpt. Replace with a real, sourced article before publication.",
-    body: "Placeholder body copy. Replace with a real, sourced article before publication.",
+    body: "",
     category: "Organizational notice",
-    publishedAt: "2026-01-01",
+    publishedAt: "2026-07-18",
     verificationStatus: "placeholder",
   },
   {
     id: "news-2",
-    title: "Placeholder headline pending an approved article",
+    title: "Statement on public participation in national budgeting",
     slug: "placeholder-article-two",
     excerpt:
       "Placeholder excerpt. Replace with a real, sourced article before publication.",
     body: "Placeholder body copy. Replace with a real, sourced article before publication.",
     category: "Policy",
-    publishedAt: "2026-01-01",
+    publishedAt: "2026-07-10",
     verificationStatus: "placeholder",
   },
   {
     id: "news-3",
-    title: "Placeholder headline pending an approved article",
+    title: "County coordinators sworn in across 15 counties",
     slug: "placeholder-article-three",
     excerpt:
       "Placeholder excerpt. Replace with a real, sourced article before publication.",
     body: "Placeholder body copy. Replace with a real, sourced article before publication.",
     category: "Activities",
-    publishedAt: "2026-01-01",
+    publishedAt: "2026-06-30",
     verificationStatus: "placeholder",
   },
 ];
