@@ -518,7 +518,7 @@ export function PartyIntroduction() {
   className="absolute inset-0 bg-cover bg-center opacity-30" // or opacity-40, opacity-50
   style={{
     backgroundImage:
-      "url('https://scontent.fmba5-2.fna.fbcdn.net/v/t39.99422-6/750943876_1893237421633139_8986049146686124797_n.png?stp=dst-jpg_tt6&cstp=mx1440x960&ctp=s1440x960&_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_ohc=DS5eTSZmE6EQ7kNvwHKK-79&_nc_oc=AdoJIU1Hlubt2EqaBdL_7QkxPCWF6px9w_lJ1l6r0WxGIKARxvINERxabZAasOyiCFQ&_nc_zt=14&_nc_ht=scontent.fmba5-2.fna&_nc_gid=gT3RBNQrHauLYi829A8kUg&_nc_ss=7b289&oh=00_AQIlQgxh-L3INUVoEdTri1U_qZNqcZ-B1-wJUCUQt6PYBQ&oe=6AADBE7D')",
+      "url('/images/dcp-lead.jpeg')",
   }}
 />
 

@@ -406,7 +406,7 @@ export function SiteHeader() {
     {/* LARGER LOGO CONTAINER */}
     <div className="relative flex h-12 w-12 shrink-0 items-center justify-center sm:h-14 sm:w-14">
       <img
-        src="https://dcphazina.com/DCP_logo.png"
+        src="/images/dcp-logo.png"
         alt="DCP Kenya"
         className="relative z-10 h-full w-full object-contain filter drop-shadow-[0_4px_12px_rgba(27,67,50,0.25)] transition-transform duration-300 group-hover:scale-105"
       />

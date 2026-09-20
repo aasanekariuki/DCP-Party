@@ -247,11 +247,11 @@ export function EditorialHero() {
 
       <DecorativeGrid />
 
-//       {/* =========================================================
-//           FLOATING AMBIENT OBJECTS
-//       ========================================================== */}
-
-//       <motion.div
+       {/* =========================================================
+          FLOATING AMBIENT OBJECTS
+      ========================================================== */}
+      
+      <motion.div
         aria-hidden="true"
         style={{ y: floatY1 }}
         className="pointer-events-none absolute left-[3%] top-24 -z-10 hidden lg:block"

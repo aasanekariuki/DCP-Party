@@ -72,8 +72,11 @@
 
 html {
   scroll-behavior: smooth;
-  /* Bumping base font size slightly makes everything render larger and more visible globally */
-  font-size: 17px; 
+  /* 
+    Expanded root font size to 22px (~30% increase) for high legibility 
+    and elder readability. All rem-based spacing and typography auto-scale.
+  */
+  font-size: 22px; 
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -94,9 +97,9 @@ body {
   background-color: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-body);
-  /* Enhanced line-height and letter spacing for readability at larger sizes */
-  line-height: 1.65;
-  letter-spacing: 0.01em;
+  /* Generous line-height and letter-spacing to prevent text crowding */
+  line-height: 1.8;
+  letter-spacing: 0.025em;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 
@@ -143,8 +146,8 @@ a {
 }
 
 .focus-ring:focus-visible {
-  outline: 3px solid var(--color-savanna);
-  outline-offset: 2px;
+  outline: 4px solid var(--color-mint-bright);
+  outline-offset: 3px;
 }
 
 /* Utility for line-clamping card copy without extra plugins */
